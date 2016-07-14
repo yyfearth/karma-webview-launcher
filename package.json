@@ -4,6 +4,7 @@
   "description": "A Karma plugin. Launcher for WebView App.",
   "main": "index.js",
   "scripts": {
+    "postinstall": "node build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
