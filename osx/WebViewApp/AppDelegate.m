@@ -33,11 +33,14 @@
     [self.webView setUIDelegate:(id)self];
 
     [window setContentView:self.webView];
-    [window setDelegate:(id)self];
 }
 
 - (void)windowWillClose:(NSNotification *)aNotification {
     [NSApp terminate:self];
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+    return YES;
 }
 
 - (void)webView:(WebView *)sender frame:(WebFrame *)frame exceededDatabaseQuotaForSecurityOrigin:(id) origin database:(NSString *)databaseIdentifier {
