@@ -1,1 +1,9 @@
 node_modules
+*.zip
+*.tgz
+
+# IDEA IDE
+*.iml
+*.ipr
+*.iws
+.idea/

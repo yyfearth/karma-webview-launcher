@@ -1,21 +1,21 @@
 {
-  "name": "karma-script-launcher",
+  "name": "karma-webview-launcher",
   "version": "1.0.0",
-  "description": "A Karma plugin. Launcher for shell scripts.",
+  "description": "A Karma plugin. Launcher for WebView App.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/karma-runner/karma-script-launcher.git"
+    "url": "git://github.com/yyfearth/karma-webview-launcher.git"
   },
   "keywords": [
     "karma-plugin",
     "karma-launcher",
-    "script"
+    "webview"
   ],
-  "author": "Vojta Jina <vojta.jina@gmail.com>",
+  "author": "Wilson Young <yyfearth@gmail.com>",
   "dependencies": {},
   "peerDependencies": {
     "karma": ">=0.9"
@@ -36,6 +36,7 @@
     "load-grunt-tasks": "^3.4.1"
   },
   "contributors": [
+    "Vojta Jina <vojta.jina@gmail.com>",
     "dignifiedquire <dignifiedquire@gmail.com>",
     "Alex Kessock <akessock@gmail.com>",
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>"
