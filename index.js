@@ -1,13 +1,25 @@
-var WebViewBrowser = function (baseBrowserDecorator) {
+var WebViewBrowser = function (baseBrowserDecorator, webviewOpts) {
   baseBrowserDecorator(this)
+  webviewOpts = webviewOpts || {}
 
   this._getOptions = function (url) {
-    return [url]
+    var opts = []
+    if (webviewOpts.hide || webviewOpts.show === false) {
+      opts.push('--hide')
+    }
+    if (webviewOpts.minimized) {
+      opts.push('--minimized')
+    }
+    if (webviewOpts.skipTaskbar || webviewOpts.showDockIcon === false) {
+      opts.push('--no-dock-icon')
+    }
+    opts.push(url)
+    return opts
   }
 }
 
 WebViewBrowser.prototype = {
-  name: 'WebView',
+  name: 'webview',
 
   DEFAULT_CMD: {
     darwin: __dirname + '/osx/build/Release/WebViewApp.app/Contents/MacOS/WebViewApp'
@@ -15,7 +27,7 @@ WebViewBrowser.prototype = {
   ENV_CMD: 'WEBVIEW_BIN'
 };
 
-WebViewBrowser.$inject = ['baseBrowserDecorator']
+WebViewBrowser.$inject = ['baseBrowserDecorator', 'config.webviewOpts']
 
 // PUBLISH DI MODULE
 module.exports = {

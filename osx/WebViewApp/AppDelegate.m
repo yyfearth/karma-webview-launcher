@@ -14,18 +14,34 @@
 @synthesize webView;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    //[window miniaturize:self];
+    NSArray *arguments = [[NSProcessInfo processInfo] arguments];
+    if (![arguments containsObject:@"--hide"]) {
+        [window makeKeyAndOrderFront:self];
+        if ([arguments containsObject:@"--minimized"]) {
+            [window miniaturize:self];
+        }
+    }
+    if (![arguments containsObject:@"--no-dock-icon"]) {
+        ProcessSerialNumber psn = { 0, kCurrentProcess };
+        TransformProcessType(&psn, kProcessTransformToForegroundApplication);
+    }
 }
 
 - (void)awakeFromNib {
     NSURL *url;
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
-    NSString *argUrl = arguments[1];
-    if ([argUrl hasPrefix:@"http://"] || [argUrl hasPrefix:@"https://"] || [argUrl hasPrefix:@"file://"]) {
-        url=[NSURL URLWithString:argUrl];
+    NSString *argUrl;
+    for (int i = 1; i < [arguments count]; ++i){
+        argUrl = arguments[i];
+        if ([argUrl hasPrefix:@"http://"] || [argUrl hasPrefix:@"https://"] || [argUrl hasPrefix:@"file://"]) {
+            url = [NSURL URLWithString:argUrl];
+            if (url != nil) {
+                break;
+            }
+        }
     }
     if (url == nil) {
-        url=[NSURL URLWithString:@"https://html5test.com"];
+        url = [NSURL URLWithString:@"https://html5test.com"];
     }
     NSLog(@"url: %@", url);
 
