@@ -15,23 +15,39 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
-    if (![arguments containsObject:@"--hide"]) {
+    if (![arguments containsObject:@"-hide"]) {
         [window makeKeyAndOrderFront:self];
-        if ([arguments containsObject:@"--minimized"]) {
+        if ([arguments containsObject:@"-minimized"]) {
             [window miniaturize:self];
         }
     }
-    if (![arguments containsObject:@"--no-dock-icon"]) {
+    if (![arguments containsObject:@"-no-dock-icon"]) {
         ProcessSerialNumber psn = { 0, kCurrentProcess };
         TransformProcessType(&psn, kProcessTransformToForegroundApplication);
     }
 }
 
 - (void)awakeFromNib {
+    NSString *ua = [[NSUserDefaults standardUserDefaults] valueForKey:@"customUA"];
+    if (ua == nil) {
+        ua = [[NSUserDefaults standardUserDefaults] valueForKey:@"appendUA"];
+        if (ua == nil) {
+            NSBundle *webKit = [NSBundle bundleWithIdentifier:@"com.apple.WebKit"];
+            NSString *build = [webKit objectForInfoDictionaryKey: (NSString *)kCFBundleVersionKey];
+            NSString *version = [webKit objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+            NSLog(@"webkit: %@", build);
+            ua = [NSString stringWithFormat: @"WebView/%@ (like Safari/%@)", build, version];
+        }
+        webView.applicationNameForUserAgent = ua;
+    }
+    else {
+        webView.customUserAgent = ua;
+    }
+
     NSURL *url;
     NSArray *arguments = [[NSProcessInfo processInfo] arguments];
     NSString *argUrl;
-    for (int i = 1; i < [arguments count]; ++i){
+    for (int i = 1; i < [arguments count]; ++i) {
         argUrl = arguments[i];
         if ([argUrl hasPrefix:@"http://"] || [argUrl hasPrefix:@"https://"] || [argUrl hasPrefix:@"file://"]) {
             url = [NSURL URLWithString:argUrl];
@@ -45,10 +61,11 @@
     }
     NSLog(@"url: %@", url);
 
-    [[self.webView mainFrame] loadRequest:[NSURLRequest requestWithURL:url]];
-    [self.webView setUIDelegate:(id)self];
+    // webView.mainFrameURL = argUrl
+    [[webView mainFrame] loadRequest:[NSURLRequest requestWithURL:url]];
+    [webView setUIDelegate:(id)self];
 
-    [window setContentView:self.webView];
+    [window setContentView:webView];
 }
 
 - (void)windowWillClose:(NSNotification *)aNotification {

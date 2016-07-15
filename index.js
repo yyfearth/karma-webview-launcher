@@ -5,13 +5,19 @@ var WebViewBrowser = function (baseBrowserDecorator, webviewOpts) {
   this._getOptions = function (url) {
     var opts = []
     if (webviewOpts.hide || webviewOpts.show === false) {
-      opts.push('--hide')
+      opts.push('-hide')
     }
     if (webviewOpts.minimized) {
-      opts.push('--minimized')
+      opts.push('-minimized')
     }
     if (webviewOpts.skipTaskbar || webviewOpts.showDockIcon === false) {
-      opts.push('--no-dock-icon')
+      opts.push('-no-dock-icon')
+    }
+    if (webviewOpts.userAgent) {
+      opts.push('-customUA', webviewOpts.userAgent)
+    }
+    else if (webviewOpts.appendUserAgent) {
+      opts.push('-appendUA', webviewOpts.appendUserAgent)
     }
     opts.push(url)
     return opts

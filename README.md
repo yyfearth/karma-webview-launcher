@@ -39,8 +39,10 @@ module.exports = function(config) {
     browsers: ['WebView'],
     webviewOpts: {
       show: true/false, // or `hide: false/true`
-      minimized: true/false // only work when show is true or hide is false
-      skipTaskbar: true/false // or `showDockIcon: false/true`
+      minimized: true/false, // only work when show is true or hide is false
+      skipTaskbar: true/false, // or `showDockIcon: false/true`,
+      userAgent: 'Mozilla/5.0 Version/9.0 Mobile/13A4305g', // customize the user agent
+      appendUserAgent: 'Safari/601.1' // append to the default user agent, *not working with userAgent*
     }
   })
 }
