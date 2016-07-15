@@ -1,6 +1,6 @@
 {
   "name": "karma-webview-launcher",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A Karma plugin. Launcher for WebView App.",
   "main": "index.js",
   "scripts": {
